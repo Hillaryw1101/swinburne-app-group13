@@ -1,26 +1,107 @@
+/* Tailwind v4 */
 @import "tailwindcss";
 
+/* ---------- Design tokens ---------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand:  #D42A30;  /* Swinburne red */
+  --ink:    #0f172a;  /* slate-900 */
+  --canvas: #f8fafc;  /* slate-50 */
+
+  /* optional helpers used in shadows/rings */
+  --ring: rgba(2, 6, 23, .08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Font stack using Inter variable from layout.tsx */
+:root { font-synthesis-weight: none; }
+.font-sans {
+  font-family:
+    var(--font-inter),
+    ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ---------- Base ---------- */
+html, body { height: 100%; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--canvas);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* subtle premium background texture */
+  background-image:
+    radial-gradient(900px 520px at 85% -10%, rgba(212,42,48,.06), transparent 60%),
+    radial-gradient(800px 520px at -10% 110%, rgba(15,23,42,.06), transparent 60%);
 }
+
+/* ---------- Layout helpers ---------- */
+.maxw { max-width: 72rem; margin-left: auto; margin-right: auto; }
+.container-px { padding-left: 1rem; padding-right: 1rem; }
+@media (min-width: 768px)  { .container-px { padding-left: 1.5rem; padding-right: 1.5rem; } }
+@media (min-width: 1024px) { .container-px { padding-left: 2rem;   padding-right: 2rem;   } }
+
+/* iOS safe area for bottom nav / fixed UI */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-top    { padding-top:    env(safe-area-inset-top); }
+
+/* ---------- Cards & interaction polish ---------- */
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0; /* slate-200 */
+  border-radius: 1rem;       /* ~rounded-2xl */
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.card:hover { box-shadow: 0 16px 40px rgba(0,0,0,.12); transform: translateY(-2px); }
+
+/* Unified focus ring */
+:where(a, button, input, [role="button"], [role="link"]) { outline: none; }
+:where(a, button, input, [role="button"], [role="link"]):focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 55%, transparent);
+  border-radius: .75rem;
+}
+
+/* Scrollbar helper */
+.no-scrollbar::-webkit-scrollbar { display: none }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none }
+
+/* ---------- Motion & reveal ---------- */
+@keyframes fade-in-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.motion-safe\:animate-fade-in-up { animation: fade-in-up 280ms cubic-bezier(.2,.8,.2,1) both; }
+
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .card,
+  ._anim { transform: none !important; }
+}
+
+/* ---------- Auto dark mode ---------- */
+@media (prefers-color-scheme: dark) {
+  :root { --canvas:#0b0f1a; --ink:#e5e7eb; }
+  body  { background-color: var(--canvas); color: var(--ink); }
+  .card { background:#0f1625; border-color:#1f2937; }
+}
+
+/* ---------- Small utilities ---------- */
+
+/* Header pills */
+.chip {
+  @apply rounded-full border border-slate-300/60 px-3 py-1 text-xs hover:bg-slate-50 transition;
+}
+
+/* Optional skip-link variant (you’re using sr-only already in layout) */
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+  left: 1rem; top: 1rem; z-index: 50;
+  @apply bg-white text-slate-900 px-3 py-2 rounded-md shadow;
+}
+
+/* Fluid section titles */
+h3 { font-size: clamp(0.95rem, 0.82rem + 0.5vw, 1.125rem); }
