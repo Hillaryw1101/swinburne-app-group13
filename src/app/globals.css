@@ -83,11 +83,11 @@ body {
 }
 
 /* ---------- Auto dark mode ---------- */
-@media (prefers-color-scheme: dark) {
-  :root { --canvas:#0b0f1a; --ink:#e5e7eb; }
-  body  { background-color: var(--canvas); color: var(--ink); }
-  .card { background:#0f1625; border-color:#1f2937; }
-}
+/* Dark mode when <html class="dark">… */
+.dark :root { --canvas:#0b0f1a; --ink:#e5e7eb; }
+.dark body  { background-color: var(--canvas); color: var(--ink); }
+.dark .card { background:#0f1625; border-color:#1f2937; }
+
 
 /* ---------- Small utilities ---------- */
 
