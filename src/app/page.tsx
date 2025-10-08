@@ -159,8 +159,9 @@ export default function Page() {
       {/* Emergency & Safety */}
       <Section id="emergency" title="Emergency & Safety">
         <div className={GRID}>
-          <TileCard href="/emergency" title="Security Contact" icon={<PhoneIcon />} tone="red" />
+          <TileCard href="/security-contact" title="Security Contact" icon={<PhoneIcon />} tone="red" />
           <TileCard href="/safety" title="Staying Safe" icon={<ShieldIcon />} tone="red" />
+          <TileCard href="/exit-navigation" title="Navigation" icon={<ShieldIcon />} tone="red" />
         </div>
       </Section>
 
